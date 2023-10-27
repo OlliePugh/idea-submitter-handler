@@ -1,5 +1,6 @@
 import admin from "firebase-admin";
 import serviceAccount from "../serviceAccount.json" assert { type: "json" };
+import axios from "axios";
 
 admin.initializeApp({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -31,10 +32,27 @@ query.on("child_added", async (snapshot) => {
 
   // get the user if its a authed request
   const user = await getUser(userId);
+  let output = value;
 
   if (user?.displayName) {
-    process.stderr.write(` | ${user?.displayName}`);
+    process.stderr.write(` | ${user.displayName}`);
+    output += ` - ${user.displayName}`;
   }
+  await axios.post(
+    "http://192.168.1.173:8013/api/print/text",
+    new URLSearchParams({
+      text: output,
+      align: "center",
+      font_family: "Comic Sans MS (Regular)",
+      font_size: "50",
+      label_size: "62",
+      orientation: "standard",
+      margin_top: "24",
+      margin_bottom: "45",
+      margin_left: "35",
+      margin_right: "35",
+    })
+  );
 
   process.stdout.write("\n");
 });
