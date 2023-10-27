@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "dev:ts-node": "ts-node --esm src/index.ts",
     "dev": "nodemon --exec npm run dev:ts-node",
     "clean": "rimraf coverage build tmp",
